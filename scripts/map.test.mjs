@@ -35,6 +35,7 @@ try{
   assert.match(await page.locator('.earth-places a').getAttribute('href'),/25.1367,85.4437/);
   await page.getByTitle('Zoom in',{exact:true}).click();
   await page.getByTitle('Zoom out',{exact:true}).click();
+  await page.waitForFunction(()=>{const canvas=document.querySelector('.earth-canvas canvas');if(!canvas)return false;const c=document.createElement('canvas');c.width=32;c.height=32;const ctx=c.getContext('2d');ctx.drawImage(canvas,0,0,32,32);const d=ctx.getImageData(0,0,32,32).data;let sum=0;for(let i=0;i<d.length;i+=4)sum+=d[i]+d[i+1]+d[i+2];return sum/(32*32*3)>30},null,{timeout:45000});
   const pixels=await page.locator('.earth-canvas canvas').evaluate(canvas=>{const c=document.createElement('canvas');c.width=64;c.height=64;const ctx=c.getContext('2d');ctx.drawImage(canvas,0,0,64,64);const d=ctx.getImageData(0,0,64,64).data;let sum=0;for(let i=0;i<d.length;i+=4)sum+=d[i]+d[i+1]+d[i+2];return sum/(64*64*3)});
   assert.ok(pixels>30,`Canvas blank: ${pixels}`);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
