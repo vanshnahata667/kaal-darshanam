@@ -1,6 +1,6 @@
 "use client";
 import {useState} from 'react';
-import {X,Upload,Plus,Trash2,Save} from 'lucide-react';
+import {X,Upload,Trash2,Save} from 'lucide-react';
 import {Library,Place,MediaItem,storeLibrary,safeURL} from './library';
 import {HistoryEvent} from './heritage';
 export default function ContentEditor({library,onSave,onClose}:{library:Library;onSave:(value:Library)=>void;onClose:()=>void}){

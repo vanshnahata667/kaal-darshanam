@@ -22,7 +22,7 @@ function loadCesium(){
 export function locationFor(place:Place|undefined){if(!place)return null;const known=placeContext[place.id];const lat=place.latitude?.trim()?Number(place.latitude):known?.lat;const lng=place.longitude?.trim()?Number(place.longitude):known?.lng;return Number.isFinite(lat)&&Number.isFinite(lng)&&Math.abs(lat!)<=90&&Math.abs(lng!)<=180?{lat:lat!,lng:lng!,country:place.country||known?.country||''}:null}
 export default function EarthView({places,initialId,onExplore}:{places:Place[];initialId?:string;onExplore:(id:string)=>void}){
  const host=useRef<HTMLDivElement>(null),viewer=useRef<Cesium.CesiumWidget|null>(null),engine=useRef<CesiumGlobal|null>(null),detailedTiles=useRef(true);const [selected,setSelected]=useState(initialId||places.find(p=>locationFor(p))?.id||''),[mode,setMode]=useState('map'),[status,setStatus]=useState('Loading globe...'),[ready,setReady]=useState(false),[photoKey,setPhotoKey]=useState('');
- const placesRef=useRef(places);placesRef.current=places;
+ const placesRef=useRef(places);useEffect(()=>{placesRef.current=places},[places]);
  const selectedId=useRef(selected);const [placeQuery,setPlaceQuery]=useState('');
  const mapKey=JSON.stringify(places.map(p=>[p.id,p.name,locationFor(p)]));
  const place=places.find(p=>p.id===selected),location=place?locationFor(place):null;

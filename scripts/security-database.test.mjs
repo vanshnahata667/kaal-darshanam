@@ -42,5 +42,11 @@ try{
  await db.exec('reset role;set role anon');
  await assert.rejects(()=>db.query('select * from public.profiles'));
  await assert.rejects(()=>db.query('select * from public.user_libraries'));
+ await db.exec('reset role');
+ const audit=(await db.query(await readFile('supabase/verify-hosted-permissions.sql','utf8'))).rows[0].permission_audit;
+ assert.equal(audit.tables.length,3);
+ assert.ok(audit.tables.every(table=>table.rls_enabled));
+ assert.equal(audit.media_bucket[0].public,false);
+ assert.ok(audit.policies.some(policy=>policy.policyname==='Admin edits own library'));
  console.log('Database tests passed: migration twice, two-user RLS, forged ownership, malicious URLs, private storage and anonymous denial. No hosted data modified.');
 }finally{await db.close()}

@@ -5,6 +5,18 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    files: ["app/**/*.{ts,tsx}"],
+    rules: {
+      // Shared with the static Firebase entrypoint: no Next image server or router.
+      "@next/next/no-img-element": "off",
+      "@next/next/no-html-link-for-pages": "off",
+    },
+  },
+  {
+    files: ["scripts/**/*.cjs"],
+    rules: {"@typescript-eslint/no-require-imports": "off"},
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
