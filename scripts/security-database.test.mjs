@@ -7,6 +7,7 @@ try{
  await db.exec(`create role anon;create role authenticated;create schema auth;create schema storage;
  create table auth.users(id uuid primary key);
  create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
+ create function auth.jwt() returns jsonb language sql stable as $$select jsonb_build_object('email',current_setting('request.jwt.claim.email',true))$$;
  create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);
  create table storage.objects(id uuid default gen_random_uuid(),bucket_id text,name text);
  create function storage.foldername(name text) returns text[] language sql immutable as $$select string_to_array(name,'/')$$;
@@ -18,7 +19,8 @@ try{
  const hardening=await readFile('supabase/security-hardening.sql','utf8');
  await db.exec(hardening);await db.exec(hardening);
  await db.query('insert into public.profiles(id) values ($1),($2)',[a,b]);
- await db.query("select set_config('request.jwt.claim.sub',$1,false)",[a]);await db.exec('set role authenticated');
+ await db.query("select set_config('request.jwt.claim.sub',$1,false)",[a]);
+ await db.query("select set_config('request.jwt.claim.email',$1,false)",['jvansh995@gmail.com']);await db.exec('set role authenticated');
  assert.deepEqual((await db.query('select id from public.profiles')).rows.map(r=>r.id),[a]);
  assert.equal((await db.query('update public.profiles set display_name=$1 where id=$2',['forged',b])).affectedRows,0);
  const place={id:'test',name:'Test',region:'India',era:'1000',dynasty:'Test',image:'/heritage/hampi.jpg',alt:'Test',credit:'Test',imageSource:'https://example.com',source:'https://example.com',summary:'Test',history:'Test',damage:'Test'};
@@ -31,6 +33,9 @@ try{
  await assert.rejects(()=>db.query('insert into storage.objects(bucket_id,name) values ($1,$2)',['heritage-media',`${b}/test/media`]));
  await assert.rejects(()=>db.query('insert into storage.objects(bucket_id,name) values ($1,$2)',['heritage-media',`${a}/../media`]));
  await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[b]);await db.exec('set role authenticated');
+ await db.query("select set_config('request.jwt.claim.email',$1,false)",['visitor@example.test']);
+ await assert.rejects(()=>db.query('insert into public.user_libraries(user_id,content) values ($1,$2)',[b,JSON.stringify(content)]));
+ await assert.rejects(()=>db.query('insert into storage.objects(bucket_id,name) values ($1,$2)',['heritage-media',`${b}/test/media`]));
  assert.equal((await db.query('select * from public.user_libraries')).rows.length,0);
  assert.equal((await db.query('select * from storage.objects')).rows.length,0);
  assert.equal((await db.query('delete from storage.objects')).affectedRows,0);

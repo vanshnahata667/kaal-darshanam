@@ -8,7 +8,7 @@ export default function PanoramaVideo({src,name}:{src?:string;name:string}){
  useEffect(()=>{
   if(!immersive||!host.current||!video.current)return;
   const el=host.current;let renderer:THREE.WebGLRenderer;
-  try{renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true})}catch{setError('360 playback needs WebGL. Standard playback remains available.');return}
+  try{renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true})}catch{const fallback=setTimeout(()=>{setImmersive(false);setError('360 playback needs WebGL. Switched to standard video.')},0);return()=>clearTimeout(fallback)}
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));el.appendChild(renderer.domElement);
   renderer.domElement.setAttribute('aria-label',`${name} 360 video`);
   const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(70,1,.01,20);camera.position.z=.1;
