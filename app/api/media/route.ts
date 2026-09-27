@@ -1,9 +1,11 @@
 import {authenticatedClient,apiError,boundedBytes} from '../../../lib/server-auth';
 import {identifier} from '../../../lib/validation';
 import {MAX_UPLOAD_BYTES,verifiedMediaType} from '../../../lib/media-validation';
+import {isAdminUser} from '../../../lib/admin';
 export async function POST(request:Request){
  try{
   const auth=await authenticatedClient(request);if(!auth)return apiError(401,'Sign in required.');
+  if(!isAdminUser(auth.user))return apiError(403,'Administrator access required.');
   const params=new URL(request.url).searchParams;
   const place=identifier.safeParse(params.get('placeId')),media=identifier.safeParse(params.get('mediaId'));
   if(!place.success||!media.success)return apiError(400,'Invalid upload destination.');

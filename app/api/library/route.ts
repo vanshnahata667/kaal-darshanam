@@ -1,5 +1,6 @@
 import {authenticatedClient,apiError,boundedJson} from '../../../lib/server-auth';
 import {libraryForUser} from '../../../lib/validation';
+import {isAdminUser} from '../../../lib/admin';
 export async function GET(request:Request){
  try{const auth=await authenticatedClient(request);if(!auth)return apiError(401,'Sign in required.');
  const {data,error}=await auth.client.from('user_libraries').select('content').eq('user_id',auth.user.id).maybeSingle();
@@ -9,6 +10,7 @@ export async function GET(request:Request){
 }
 export async function PUT(request:Request){
  try{const auth=await authenticatedClient(request);if(!auth)return apiError(401,'Sign in required.');
+ if(!isAdminUser(auth.user))return apiError(403,'Administrator access required.');
  let content;try{content=libraryForUser(await boundedJson(request),auth.user.id)}catch{return apiError(400,'Check the place details, sources and uploaded files.');}
  const {error}=await auth.client.from('user_libraries').upsert({user_id:auth.user.id,content,updated_at:new Date().toISOString()});
  return error?apiError(503,'Your changes could not be saved. Try again.'):Response.json({ok:true},{headers:{'Cache-Control':'no-store'}});
