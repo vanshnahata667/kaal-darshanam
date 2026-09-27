@@ -70,37 +70,49 @@ export const sources = [
     "monument": "konark",
     "url": "https://www.rd.odisha.gov.in/en/odisha-tourism/important-tourist-pointskonark",
     "title": "Government of Odisha - Konark",
-    "note": "Historical and architectural context; not a dimensional survey for the 3D model."
+    "note": "Supports the 13th-century attribution to Narasimhadeva I and the temple's dedication to Surya. It is not a dimensional survey or proof of the sanctuary tower's exact original form."
   },
   {
     "monument": "khajuraho",
     "url": "https://www.mptourism.com/kandariya-mahadeva-temple-in-khajuraho.html",
     "title": "Madhya Pradesh Tourism - Kandariya Mahadeva",
-    "note": "Historical and architectural context; not a dimensional survey for the 3D model."
+    "note": "Supports the approximate 1025-1050 CE dating, Shiva dedication and the standing temple's architectural and sculptural character. It does not validate the proportions of our digital mesh."
   },
   {
     "monument": "nalanda",
     "url": "https://nalanda.nic.in/en/history/",
     "title": "District Nalanda - History",
-    "note": "Historical and architectural context; not a dimensional survey for the 3D model."
+    "note": "Describes Nalanda as a Buddhist mahavihara, its Gupta and later patronage, long period of learning and gradual change. It does not establish a single event as the complete explanation for decline."
   },
   {
     "monument": "shanti-stupa",
     "url": "https://leh.nic.in/tourist-place/shanti-stupa/",
     "title": "District Leh - Shanti Stupa",
-    "note": "Historical and architectural context; not a dimensional survey for the 3D model."
+    "note": "Records the 1991 construction by Gyomyo Nakamura, relics, two-level imagery and living devotional use. The model's site edge and detailed geometry are not surveyed by this account."
   },
   {
     "monument": "konark",
     "url": "https://odishatourism.gov.in/content/tourism/en/discover/attractions/temples-monuments/konark.html",
     "title": "Odisha Tourism - Surviving architecture",
-    "note": "Used for surviving hall, chariot imagery and stone materials. Its conflicting century labels are not used for construction dating."
+    "note": "Describes the chariot imagery, 24 wheels, seven horses, surviving jagamohana and roofless Natya Mandap. Its page gives conflicting 12th- and 13th-century labels, so the construction date is taken from the government account above."
   },
   {
     "monument": "nalanda",
     "url": "https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=147142",
     "title": "Press Information Bureau - ASI excavation history",
-    "note": "Excavation and consolidation periods: 1915–1937 and 1974–1982."
+    "note": "Government summary of ASI excavation and consolidation in 1915-1937 and 1974-1982. It supports the archaeological history, not speculative roofs or casualty narratives."
+  },
+  {
+    "monument": "nalanda",
+    "url": "https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=93006",
+    "title": "Press Information Bureau - Excavation in Nalanda University",
+    "note": "Lists eleven Buddhist monasteries, five brick temples, shrines and votive stupas exposed in the 1915-1937 excavation phase, plus later finds. These counts do not describe the full ancient campus."
+  },
+  {
+    "monument": "khajuraho",
+    "url": "https://www.mptourism.com/pdf/Discovering-MP-Final-Book.pdf",
+    "title": "Madhya Pradesh Tourism - Discovering Madhya Pradesh",
+    "note": "The state tourism guide describes Kandariya's rising sequence of towers and the makara torana at the entrance. It is an architectural visitor guide, not a measured site plan."
   }
 ];
 export const events:Record<string,HistoryEvent[]> = {
